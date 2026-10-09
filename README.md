@@ -45,6 +45,7 @@ All implementations use [VectorAI DB](https://www.actian.com/databases/vectorai-
 | [Is Agentic AI Architecture Different for On-Premises and Edge?](https://open.substack.com/pub/madamcto/p/is-agentic-ai-architecture-different) | Article | 8 min read | Advanced |
 | [Edge Retrieval Pipeline with VectorAI DB (No Internet Required)](https://www.youtube.com/watch?v=GtRUOUbDTB0) | Video | 9 min | Advanced |
 | [Running Gemma 2B on Edge Hardware with Actian VectorAI DB](https://actiandev.hashnode.dev/running-gemma-2b-on-edge-hardware-with-actian-vectorai-db) | Blog post | 12 min read | Advanced |
+| [Gmail Reply Agent with Long-Term Memory (pydantic-ai + VectorAI DB)](https://github.com/alexeygrigorev/gmail-memory-assistant) | Working code | 15 min setup | Intermediate |
 
 ---
 
@@ -108,15 +109,13 @@ If you have deployed a CrewAI application with `memory=True` and you are seeing 
 
 ---
 
-### PydanticAI with VectorAI DB memory
+### pydantic-ai with VectorAI DB memory
 
-**[Add Persistent Memory to a Pydantic AI Agent With VectorAI DB](https://www.actian.com/blog/developer/add-persistent-memory-to-a-pydantic-ai-agent-with-vectorai-db/)** (Blog post)
+**[Gmail Reply Agent with Long-Term Memory (pydantic-ai + VectorAI DB)](https://github.com/alexeygrigorev/gmail-memory-assistant)** (Working code)
 
-**[Add Persistent Memory to a Pydantic AI Agent With VectorAI DB](https://youtu.be/Gs9ybdFMqFc)** (Video)
+A Chrome extension for Gmail that drafts email replies and remembers how you like them written. It applies the persistent memory pattern from the tutorial above with [pydantic-ai](https://ai.pydantic.dev/). When you correct a draft ("for speaker invitations, keep it under 100 words and ask about the audience"), the agent saves that correction to VectorAI DB as a rule tagged with an email category. On the next relevant email, in a different thread or after a restart, it retrieves the matching rules and applies them without being told again. Rules for one kind of email don't leak into unrelated ones. A memory indicator in Gmail shows which saved rules were used for each draft. Embeddings run locally with `all-MiniLM-L6-v2`, so the memory stack stays self-hosted.
 
-PydanticAI does not persist memory by default, and simple backends like FileStore only match literal text. Save "I deploy with Terraform through GitHub Actions" and later ask "what tools do I use for infrastructure deployments?" and the two never connect. This tutorial fixes that by turning memories into embeddings with sentence-transformers and storing them in VectorAI DB in Docker, so recall works by meaning. The video walks through the same build, and the full code is in the [community repo](https://github.com/actian-devs/developer-content/tree/main/blog/pydantic-ai-memory-article).
-
-**You will learn:** how to build a memory store with store, search, list, and delete, how to split answering and fact extraction into two agents so the extractor only sees what the user actually said, how to scope every operation by user ID, and how to tune similarity thresholds against real retrieval scores.
+**You will learn:** how to turn user corrections into reusable long-term memories with an agent tool, how to scope retrieval by category so memories apply only where they are relevant, and how to surface memory usage in a real application.
 
 ---
 
